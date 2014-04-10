@@ -15,3 +15,22 @@ $(document).ready ->
   ).on("error", ->
     cartodb.log.log "some error occurred"
   )
+
+  setInterval(github_fetch, 5000)
+  github_fetch()
+
+github_fetch = ->
+  $.getJSON("https://api.github.com/orgs/unepwcmc/events", (data) ->
+      console.log(data)
+      html = ""
+      for event in data
+        if event.type == "PushEvent"
+          html += """
+            <li>
+              <img src='#{event.actor.avatar_url}'>
+              <h5>#{event.payload.commits[0].author.name}</h5>
+              <p>#{event.repo.name} <small>#{event.payload.commits[0].message.substring(0, 20)}…</small></p>
+            </li>
+          """
+      $('#github_events').html(html)
+    )

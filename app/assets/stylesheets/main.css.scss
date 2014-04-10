@@ -1,0 +1,16 @@
+// Place all the styles related to the main controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#grids {
+  li {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #CCC;
+  }
+  li:nth-child(odd) {
+    width: 70px;
+    height: 30px;
+  }
+}

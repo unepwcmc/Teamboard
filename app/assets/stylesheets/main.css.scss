@@ -3,14 +3,16 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #grids {
-  li {
+  > div {
     display: inline-block;
-    height: 50px;
-    width: 50px;
     border: 1px solid #CCC;
   }
-  li:nth-child(odd) {
-    width: 70px;
+}
+
+#github_commits,
+#github_pull_requests {
+  img {
+    width: 30px;
     height: 30px;
   }
 }

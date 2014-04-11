@@ -51,7 +51,7 @@ github_fetch = ->
   )
 
 class ProtectedPlanetStatsView
-  @ppUrl: 'http://protectedplanet.net/api/sites/recently_visited'
+  @ppUrl: 'http://protectedplanet.net/api2/sites/recently_visited'
 
   @template: '''
     <li id="protected-planet-stats">
@@ -61,7 +61,8 @@ class ProtectedPlanetStatsView
   '''
 
   @visitTemplate: (visit) ->
-    "<li>#{visit.slug}</li>"
+    niceName = visit.slug.replace(/_/g, ' ')
+    "<li><strong>#{niceName}</strong> #{visit.load_count} visit(s), last at #{visit.updated_at}</li>"
 
   constructor: ->
     @$el = $(ProtectedPlanetStatsView.template)

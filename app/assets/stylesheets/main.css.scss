@@ -5,8 +5,18 @@
 
 
 body {
+  font-family: "museo-slab", Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  margin-bottom: 10px;
+  line-height: 1.5em;
+  font-weight: 300;
+  color: #5e5a5c;
   background: image-url("knickerbocker.jpg");
   margin: 0px;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 700;
 }
 
 #grids {
@@ -35,9 +45,12 @@ body {
 #github_commits,
 #github_pull_requests {
   padding: 5px;
+  margin: 0px;
   width: 300px;
 
   li {
+    font-size: 0.8em;
+    line-height: 1.5em;
     list-style-type: none;
   }
 

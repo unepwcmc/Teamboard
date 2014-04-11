@@ -20,6 +20,7 @@ $(document).ready ->
   github_fetch()
 
   protectedPlanetStatsView = new ProtectedPlanetStatsView()
+  protectedPlanetStatsView.$el.addClass("block-width-2")
   statListEl = $('#grids')
   statListEl.append(protectedPlanetStatsView.$el)
 

@@ -16,7 +16,7 @@ $(document).ready ->
     cartodb.log.log "some error occurred"
   )
 
-  setInterval(github_fetch, 5000)
+  setInterval(github_fetch, 60000)
   github_fetch()
 
   protectedPlanetStatsView = new ProtectedPlanetStatsView()

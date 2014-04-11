@@ -62,7 +62,11 @@ class ProtectedPlanetStatsView
 
   @visitTemplate: (visit) ->
     niceName = visit.slug.replace(/_/g, ' ')
-    "<li><strong>#{niceName}</strong> #{visit.load_count} visit(s), last at #{visit.updated_at}</li>"
+    niceDate = new Date(visit.updated_at).toGMTString()
+    """<li>
+      <strong>#{niceName}</strong>
+      #{visit.load_count} visit(s), last at #{niceDate}
+    </li>"""
 
   constructor: ->
     @$el = $(ProtectedPlanetStatsView.template)
@@ -71,10 +75,7 @@ class ProtectedPlanetStatsView
     @getStats()
 
   getStats: =>
-    console.log "Fetching PP stats from:"
-    console.log ProtectedPlanetStatsView.ppUrl
     $.getJSON(ProtectedPlanetStatsView.ppUrl).success((data) =>
-      console.log "Got PP stats"
       @stats = data
 
       @render()

@@ -4,16 +4,28 @@
 
 #grids {
   > div {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
     display: inline-block;
-    border: 1px solid #CCC;
+    border: 3px solid #CCC;
   }
 }
 
 #github_commits,
 #github_pull_requests {
+  padding: 5px;
+  width: 300px;
+
+  li {
+    list-style-type: none;
+  }
+
   img {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
+    float: left;
+    margin-right: 3px;
   }
 }
 

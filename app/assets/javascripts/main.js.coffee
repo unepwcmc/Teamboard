@@ -19,6 +19,10 @@ $(document).ready ->
   setInterval(github_fetch, 5000)
   github_fetch()
 
+  protectedPlanetStatsView = new ProtectedPlanetStatsView()
+  statListEl = $('#grids')
+  statListEl.append(protectedPlanetStatsView.$el)
+
 github_fetch = ->
   $.getJSON("https://api.github.com/orgs/unepwcmc/events", (data) ->
     commits_list = ""
@@ -45,3 +49,42 @@ github_fetch = ->
     $('#github_commits').html(commits_list)
     $('#github_pull_requests').html(pull_requests_list)
   )
+
+class ProtectedPlanetStatsView
+  @ppUrl: 'http://protectedplanet.net/api/sites/recently_visited'
+
+  @template: '''
+    <li id="protected-planet-stats">
+      <h3>Recent site visits on ProtectedPlanet</h3>
+      <ul id="visited-sites"></ui>
+    </li>
+  '''
+
+  @visitTemplate: (visit) ->
+    "<li>#{visit.slug}</li>"
+
+  constructor: ->
+    @$el = $(ProtectedPlanetStatsView.template)
+
+    setInterval(@getStats, 7000)
+    @getStats()
+
+  getStats: =>
+    console.log "Fetching PP stats from:"
+    console.log ProtectedPlanetStatsView.ppUrl
+    $.getJSON(ProtectedPlanetStatsView.ppUrl).success((data) =>
+      console.log "Got PP stats"
+      @stats = data
+
+      @render()
+    ).fail((err)->
+      console.log "Error fetching PP data:"
+      console.log err
+    )
+
+  render: =>
+    siteListEl = @$el.find("#visited-sites")
+    siteListEl.empty()
+
+    for site in @stats
+      siteListEl.append(ProtectedPlanetStatsView.visitTemplate(site))

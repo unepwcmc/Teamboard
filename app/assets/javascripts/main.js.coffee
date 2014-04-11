@@ -16,35 +16,62 @@ $(document).ready ->
     cartodb.log.log "some error occurred"
   )
 
-  setInterval(github_fetch, 5000)
+  setInterval(github_fetch, 60000)
   github_fetch()
 
   protectedPlanetStatsView = new ProtectedPlanetStatsView()
+  protectedPlanetStatsView.$el.addClass("block-width-2")
   statListEl = $('#grids')
   statListEl.append(protectedPlanetStatsView.$el)
+
+GITHUB_EVENTS_TO_SHOW = 5
+GITHUB_MESSAGE_LENGTH = 25
+
+truncateMessage = (message) ->
+  if message.length > GITHUB_MESSAGE_LENGTH
+    return message.substring(0, GITHUB_MESSAGE_LENGTH) + "…"
+  else
+    return message
 
 github_fetch = ->
   $.getJSON("https://api.github.com/orgs/unepwcmc/events", (data) ->
     commits_list = ""
     pull_requests_list = ""
 
-    for event in data
-      if event.type == "PushEvent"
-        commits_list += """
+    pushEvents = []
+    pullRequestEvents = []
+    data.forEach( (event) ->
+      pushEvents.push event if event.type is "PushEvent"
+      pullRequestEvents.push event if event.type is "PullRequestEvent"
+    )
+
+    pushEvents[0..GITHUB_EVENTS_TO_SHOW-1].forEach( (event) ->
+      shortRepoName = event.repo.name.replace('unepwcmc/', '')
+
+      message = truncateMessage(event.payload.commits[0].message)
+
+      commits_list += """
+        <li>
+          <img src='#{event.actor.avatar_url}'>
+          <strong>#{shortRepoName}</strong><br> #{message}
+        </li>
+      """
+    )
+
+    pullRequestEvents[0..GITHUB_EVENTS_TO_SHOW-1].forEach( (event) ->
+      shortRepoName = event.repo.name.replace('unepwcmc/', '')
+
+      message = truncateMessage(event.payload.pull_request.title)
+
+      pull_requests_list += """
           <li>
-            <img width='100' src='#{event.actor.avatar_url}'>
-            <h3>#{event.payload.commits[0].author.name}</h3>
-            <p>#{event.repo.name} <small>#{event.payload.commits[0].message.substring(0, 20)}…</small></p>
+            <img src='#{event.actor.avatar_url}'>
+            <strong>#{shortRepoName}</strong> #{event.actor.login} #{event.payload.action}: <br>
+            #{message}
           </li>
         """
-      else if event.type == "PullRequestEvent"
-        pull_requests_list += """
-            <li>
-              <img width='100' src='#{event.actor.avatar_url}'>
-              <h3>#{event.actor.login} #{event.payload.action} '#{event.payload.pull_request.title.substring(0, 20)}…'</h3>
-              <p><small>from #{event.payload.pull_request.user.login}</small>, on #{event.repo.name}</p>
-            </li>
-        """
+    )
+
 
     $('#github_commits').html(commits_list)
     $('#github_pull_requests').html(pull_requests_list)
@@ -54,10 +81,10 @@ class ProtectedPlanetStatsView
   @ppUrl: 'http://protectedplanet.net/api2/sites/recently_visited'
 
   @template: '''
-    <li id="protected-planet-stats">
+    <div id="protected-planet-stats">
       <h3>Recent site visits on ProtectedPlanet</h3>
       <ul id="visited-sites"></ui>
-    </li>
+    </div>
   '''
 
   @visitTemplate: (visit) ->

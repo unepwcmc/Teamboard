@@ -3,19 +3,23 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 //= depend_on_asset "knickerbocker.jpg"
 
+
 body {
-  background: image-url("knickerbocker.jpg")
+  background: image-url("knickerbocker.jpg");
+  margin: 0px;
 }
 
 #grids {
+  margin-top: 20px;
   > div {
-    background-color: white;
+    background-color: #ffffff;
+    box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.3);
     padding: 10px;
     margin: 10px;
-    border-radius: 5px;
+    border-radius: 3px;
     display: block;
     float:left;
-    border: 3px solid #CCC;
+    border: 0px solid;
     box-sizing: border-box;
   }
 

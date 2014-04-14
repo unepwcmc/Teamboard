@@ -77,3 +77,20 @@ iframe {
   height: 340px;
   padding: 10px;
 }
+
+.travis {
+  padding: 0;
+
+  li {
+    list-style-type: none;
+    padding: 5px 2px;
+
+    span {
+      float: right;
+    }
+  }
+
+  li:nth-child(even) {
+    background-color: #eee;
+  }
+}

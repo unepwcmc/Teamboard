@@ -21,8 +21,13 @@ $(document).ready ->
 
   protectedPlanetStatsView = new ProtectedPlanetStatsView()
   protectedPlanetStatsView.$el.addClass("block-width-2")
+
+  nagiosStatsView = new NagiosStatsView()
+  nagiosStatsView.$el.addClass("block-width-2")
+
   statListEl = $('#grids')
   statListEl.append(protectedPlanetStatsView.$el)
+  statListEl.append(nagiosStatsView.$el)
 
 GITHUB_EVENTS_TO_SHOW = 5
 GITHUB_MESSAGE_LENGTH = 25
@@ -76,6 +81,84 @@ github_fetch = ->
     $('#github_commits').html(commits_list)
     $('#github_pull_requests').html(pull_requests_list)
   )
+
+class NagiosStatsView
+  @mainHosts: [
+    'beta.unep-wcmc.org',
+    'checklist.cites.org',
+    'www.speciesplus.net',
+    'www.unep-wcmc.org',
+    'www.carbon-biodiversity.net'
+  ]
+
+  @nagiosUrl: '/nagios_api'
+
+  @template: '''
+    <div id="nagios-stats">
+      <h3>Infrastructure checks</h3>
+      <div id="nagios-checks">
+        <p id="nagios-summary"></p>
+        <div id="nagios-list"></div>
+      </div>
+    </div>
+  '''
+
+  @barTemplate: (barName, barValues) ->
+    passingPercentage = (barValues.passingChecks*100)/barValues.checks
+    """
+    <div class="bar" style="width: #{passingPercentage}%">
+      <strong>#{barName}</strong>
+      -
+      #{barValues.passingChecks}/#{barValues.checks} checks passing
+    </div>
+    """
+
+
+  constructor: ->
+    @$el = $(NagiosStatsView.template)
+
+    setInterval(@getStats, 10000)
+    @getStats()
+
+  getStats: =>
+    $.getJSON(NagiosStatsView.nagiosUrl).success((data) =>
+      @stats = data.services
+
+      @render()
+    ).fail((err)->
+      console.log "Error fetching Nagios data:"
+      console.log err
+    )
+
+  render: =>
+    passingChecks = 0
+    totalChecks = 0
+    bars = {}
+
+    for hostName, stat of @stats
+      for checkName, check of stat
+        totalChecks += 1
+        if hostName in NagiosStatsView.mainHosts
+          bars[hostName] ||= {passingChecks: 0, checks: 0}
+          bars[hostName].checks += 1
+        if check.plugin_output =~ /OK/
+          passingChecks += 1
+          bars[hostName].passingChecks += 1 if bars[hostName]?
+
+    checksEl = @$el.find("#nagios-checks")
+    summaryEl = checksEl.find("#nagios-summary")
+    summaryEl.html """
+      <strong style="color: red">#{passingChecks}</strong>
+      passing checks out of
+      <strong style="color: green">#{totalChecks}</strong>
+    """
+
+    mainHostsListEl = checksEl.find("#nagios-list")
+    mainHostsListEl.empty()
+
+    for hostName, barValues of bars
+      mainHostsListEl.append(NagiosStatsView.barTemplate(hostName, barValues))
+
 
 class ProtectedPlanetStatsView
   @ppUrl: 'http://protectedplanet.net/api2/sites/recently_visited'

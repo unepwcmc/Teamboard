@@ -125,6 +125,25 @@ iframe {
   }
 }
 
+.bar {
+  color: white;
+  background-color: green;
+  float: left;
+  padding: 5px 2px;
+  box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.5);
+}
+
+#nagios-list {
+  background-color: #ff1111;
+}
+
+#nagios-list:after {
+   content: " ";
+   display: block;
+   height: 0;
+   clear: both;
+}
+
 .s-chart .subtitle {
   font-family: "museo-sans";
 }

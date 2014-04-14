@@ -19,5 +19,9 @@ module Teamboard
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+    config.nagios_api_url = "http://localhost:8080/"
+    config.nagios_api_needs_auth = true
+    config.nagios_api_username = "username"
+    config.nagios_api_password = "password"
   end
 end

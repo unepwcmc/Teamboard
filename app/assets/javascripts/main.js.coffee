@@ -29,6 +29,7 @@ $(document).ready ->
   statListEl.append(protectedPlanetStatsView.$el)
   statListEl.append(nagiosStatsView.$el)
 
+
 GITHUB_EVENTS_TO_SHOW = 5
 GITHUB_MESSAGE_LENGTH = 25
 
@@ -82,6 +83,7 @@ github_fetch = ->
     $('#github_pull_requests').html(pull_requests_list)
   )
 
+
 class NagiosStatsView
   @mainHosts: [
     'beta.unep-wcmc.org',
@@ -113,7 +115,6 @@ class NagiosStatsView
     </div>
     """
 
-
   constructor: ->
     @$el = $(NagiosStatsView.template)
 
@@ -122,6 +123,9 @@ class NagiosStatsView
 
   getStats: =>
     $.getJSON(NagiosStatsView.nagiosUrl).success((data) =>
+      @totalChecks = 0
+      @passingChecks = 0
+      @bars = {}
       @stats = data.services
 
       @render()
@@ -131,32 +135,35 @@ class NagiosStatsView
     )
 
   render: =>
-    passingChecks = 0
-    totalChecks = 0
-    bars = {}
-
     for hostName, stat of @stats
       for checkName, check of stat
-        totalChecks += 1
-        if hostName in NagiosStatsView.mainHosts
-          bars[hostName] ||= {passingChecks: 0, checks: 0}
-          bars[hostName].checks += 1
-        if check.plugin_output =~ /OK/
-          passingChecks += 1
-          bars[hostName].passingChecks += 1 if bars[hostName]?
+        @collectData(hostName, check)
 
-    checksEl = @$el.find("#nagios-checks")
-    summaryEl = checksEl.find("#nagios-summary")
+    @populateSummary()
+    @populateBars()
+
+  collectData: (hostName, check) =>
+    @totalChecks += 1
+    if hostName in NagiosStatsView.mainHosts
+      @bars[hostName] ||= {passingChecks: 0, checks: 0}
+      @bars[hostName].checks += 1
+    if check.plugin_output =~ /OK/
+      @passingChecks += 1
+      @bars[hostName].passingChecks += 1 if @bars[hostName]?
+
+  populateSummary: =>
+    summaryEl = @$el.find("#nagios-summary")
     summaryEl.html """
-      <strong style="color: red">#{passingChecks}</strong>
+      <strong style="color: red">#{@passingChecks}</strong>
       passing checks out of
-      <strong style="color: green">#{totalChecks}</strong>
+      <strong style="color: green">#{@totalChecks}</strong>
     """
 
-    mainHostsListEl = checksEl.find("#nagios-list")
+  populateBars: =>
+    mainHostsListEl = @$el.find("#nagios-list")
     mainHostsListEl.empty()
 
-    for hostName, barValues of bars
+    for hostName, barValues of @bars
       mainHostsListEl.append(NagiosStatsView.barTemplate(hostName, barValues))
 
 

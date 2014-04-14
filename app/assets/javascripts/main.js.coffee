@@ -20,9 +20,8 @@ $(document).ready ->
   github_fetch()
 
   protectedPlanetStatsView = new ProtectedPlanetStatsView()
-  protectedPlanetStatsView.$el.addClass("block-width-2")
-  statListEl = $('#grids')
-  statListEl.append(protectedPlanetStatsView.$el)
+  protectedPlanetStatsView.$el.addClass("block-width-1")
+  $('#user-voice').after(protectedPlanetStatsView.$el)
 
 GITHUB_EVENTS_TO_SHOW = 5
 GITHUB_MESSAGE_LENGTH = 25
@@ -82,7 +81,7 @@ class ProtectedPlanetStatsView
 
   @template: '''
     <div id="protected-planet-stats">
-      <h3>Recent site visits on ProtectedPlanet</h3>
+      <h1>Recent visits to ProtectedPlanet</h1>
       <ul id="visited-sites"></ui>
     </div>
   '''

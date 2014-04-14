@@ -12,9 +12,8 @@
 }
 
 div#nav{
-  width: 980px;
-  margin-left: 15%;
-  margin-bottom: 40px;
+  width: 1728px;
+  margin: 0 auto 40px auto;
   overflow: hidden;
   a#home_link {
     padding: 10px 0;
@@ -39,6 +38,7 @@ div#nav{
     margin: auto;
     float: right;
     overflow: hidden;
+    list-style-type: none;
     li {
       a {
         font-family: "museo-sans", Helvetica, Arial, sans-serif;

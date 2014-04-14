@@ -111,15 +111,16 @@ iframe {
 
   li {
     list-style-type: none;
-    padding: 5px 2px;
+    padding: 5px;
 
     span {
       float: right;
+      line-height: 24px;
     }
   }
 
   li:nth-child(even) {
-    background-color: #eee;
+    background: rgba(255,255,255,0.6);
   }
 }
 
@@ -160,8 +161,15 @@ div.block-width-1, div.block-width-2 {
   }
 }
 
-#user-voice, #protected-planet-stats, #commits {
-  height: 431px;
+#user-voice, #protected-planet-stats {
+  height: 442px;
+}
+
+#commits, #pull-requests {
+  height: 300px;
+  img {
+    border-radius: 3px;
+  }
 }
 
 ul.travis {
@@ -170,4 +178,12 @@ ul.travis {
 
 #user-voice iframe {
   height: 390px;
+}
+
+#nagios-stats {
+  height: 122px;
+  span {
+    font-size: 2.5em;
+    font-weight: 700;
+  }
 }

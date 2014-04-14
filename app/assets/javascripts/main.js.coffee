@@ -23,7 +23,7 @@ $(document).ready ->
   protectedPlanetStatsView.$el.addClass("block-width-1")
 
   nagiosStatsView = new NagiosStatsView()
-  nagiosStatsView.$el.addClass("block-width-2")
+  nagiosStatsView.$el.addClass("block-width-1")
 
   $('#user-voice').after(protectedPlanetStatsView.$el)
   $('#grids').append(nagiosStatsView.$el)
@@ -95,10 +95,9 @@ class NagiosStatsView
 
   @template: '''
     <div id="nagios-stats">
-      <h3>Infrastructure checks</h3>
+      <h1>Infrastructure checks</h1>
       <div id="nagios-checks">
         <p id="nagios-summary"></p>
-        <div id="nagios-list"></div>
       </div>
     </div>
   '''
@@ -138,7 +137,7 @@ class NagiosStatsView
         @collectData(hostName, check)
 
     @populateSummary()
-    @populateBars()
+    #@populateBars()
 
   collectData: (hostName, check) =>
     @totalChecks += 1
@@ -152,9 +151,9 @@ class NagiosStatsView
   populateSummary: =>
     summaryEl = @$el.find("#nagios-summary")
     summaryEl.html """
-      <strong style="color: red">#{@passingChecks}</strong>
+      <span style="color: #EE9657">#{@passingChecks}</span>
       passing checks out of
-      <strong style="color: green">#{@totalChecks}</strong>
+      <span style="color: #65BBC6">#{@totalChecks}</span>
     """
 
   populateBars: =>

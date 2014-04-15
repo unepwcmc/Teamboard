@@ -20,15 +20,13 @@ $(document).ready ->
   github_fetch()
 
   protectedPlanetStatsView = new ProtectedPlanetStatsView()
-  protectedPlanetStatsView.$el.addClass("block-width-2")
+  protectedPlanetStatsView.$el.addClass("block-width-1")
 
   nagiosStatsView = new NagiosStatsView()
-  nagiosStatsView.$el.addClass("block-width-2")
+  nagiosStatsView.$el.addClass("block-width-1")
 
-  statListEl = $('#grids')
-  statListEl.append(protectedPlanetStatsView.$el)
-  statListEl.append(nagiosStatsView.$el)
-
+  $('#user-voice').after(protectedPlanetStatsView.$el)
+  $('#grids').append(nagiosStatsView.$el)
 
 GITHUB_EVENTS_TO_SHOW = 5
 GITHUB_MESSAGE_LENGTH = 25
@@ -97,10 +95,9 @@ class NagiosStatsView
 
   @template: '''
     <div id="nagios-stats">
-      <h3>Infrastructure checks</h3>
+      <h1>Infrastructure checks</h1>
       <div id="nagios-checks">
         <p id="nagios-summary"></p>
-        <div id="nagios-list"></div>
       </div>
     </div>
   '''
@@ -140,7 +137,7 @@ class NagiosStatsView
         @collectData(hostName, check)
 
     @populateSummary()
-    @populateBars()
+    #@populateBars()
 
   collectData: (hostName, check) =>
     @totalChecks += 1
@@ -154,9 +151,9 @@ class NagiosStatsView
   populateSummary: =>
     summaryEl = @$el.find("#nagios-summary")
     summaryEl.html """
-      <strong style="color: red">#{@passingChecks}</strong>
+      <span style="color: #EE9657">#{@passingChecks}</span>
       passing checks out of
-      <strong style="color: green">#{@totalChecks}</strong>
+      <span style="color: #65BBC6">#{@totalChecks}</span>
     """
 
   populateBars: =>
@@ -172,7 +169,7 @@ class ProtectedPlanetStatsView
 
   @template: '''
     <div id="protected-planet-stats">
-      <h3>Recent site visits on ProtectedPlanet</h3>
+      <h1>Recent visits to ProtectedPlanet</h1>
       <ul id="visited-sites"></ui>
     </div>
   '''

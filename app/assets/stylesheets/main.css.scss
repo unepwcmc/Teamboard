@@ -1,53 +1,87 @@
 // Place all the styles related to the main controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-//= depend_on_asset "knickerbocker.jpg"
+//= depend_on_asset "teamboard-background.jpg"
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 
 body {
-  background: image-url("knickerbocker.jpg")
+  font-family: "museo-sans", Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  margin-bottom: 10px;
+  line-height: 1.5em;
+  font-weight: 300;
+  color: #5e5a5c;
+  background: image-url("teamboard-background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0px;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 700;
 }
 
 #grids {
+  width: 1728px;
+  margin: 20px auto 0 auto;
+  overflow: hidden;
   > div {
-    background-color: white;
+    background-color: rgba(255,255,255, 0.8);
+    box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.3);
     padding: 10px;
     margin: 10px;
-    border-radius: 5px;
+    border-radius: 3px;
     display: block;
     float:left;
-    border: 3px solid #CCC;
+    border: 0px solid;
     box-sizing: border-box;
   }
 
   .block-width-1 {
-    width: 300px;
+    width: 412px;
   }
 
   .block-width-2 {
-    width: 620px;
+    width: 834px;
   }
 }
 
 #github_commits,
 #github_pull_requests {
   padding: 5px;
-  width: 300px;
+  margin: 0px;
 
   li {
+    font-size: 0.8em;
+    line-height: 1.5em;
     list-style-type: none;
+    padding: 10px;
+    &:nth-child(2n+1) {
+    background: rgba(255,255,255,0.6);
+    }
   }
 
   img {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     float: left;
-    margin-right: 3px;
+    margin-right: 5px;
   }
+}
+
+div.block-width-2#map-container {
+  width: 844px;
 }
 
 #map {
   width: 100%;
-  height: 200px;
+  height: 342px;
 }
 
 iframe {
@@ -56,20 +90,37 @@ iframe {
   box-sizing: content-box;
 }
 
+#protected-planet-stats {
+  width: 412px;
+  height: 340px;
+  padding: 10px;
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    li {
+      padding: 10px;
+    }
+    li:nth-child(2n+1) {
+      background: rgba(255,255,255,0.6);
+    }
+  }
+}
+
 .travis {
   padding: 0;
 
   li {
     list-style-type: none;
-    padding: 5px 2px;
+    padding: 5px;
 
     span {
       float: right;
+      line-height: 24px;
     }
   }
 
   li:nth-child(even) {
-    background-color: #eee;
+    background: rgba(255,255,255,0.6);
   }
 }
 
@@ -90,4 +141,49 @@ iframe {
    display: block;
    height: 0;
    clear: both;
+}
+
+.s-chart .subtitle {
+  font-family: "museo-sans";
+}
+
+iframe {
+  width: 95%;
+}
+
+div.block-width-1, div.block-width-2 {
+  overflow: scroll;
+  h1 {
+    font-size: 1.25em;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: 5px 0 15px 0;
+  }
+}
+
+#user-voice, #protected-planet-stats {
+  height: 442px;
+}
+
+#commits, #pull-requests {
+  height: 300px;
+  img {
+    border-radius: 3px;
+  }
+}
+
+ul.travis {
+  margin: 0;
+}
+
+#user-voice iframe {
+  height: 390px;
+}
+
+#nagios-stats {
+  height: 122px;
+  span {
+    font-size: 2.5em;
+    font-weight: 700;
+  }
 }
